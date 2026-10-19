@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roost & Raised - Farm-Fresh Poultry E-Commerce</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fdf8f4',
+              100: '#fbeee3',
+              200: '#f7dbbe',
+              500: '#d97706', // Warm Amber
+              600: '#b45309',
+              700: '#92400e', // Terracotta warm tone
+              800: '#1c3d2e', // Forest Green Accent
+              900: '#142a20', // Dark Forest
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #b45309;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #92400e;
+    }
+    .modal-backdrop {
+      background-color: rgba(20, 42, 32, 0.6);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="bg-amber-50/40 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="bg-brand-900 text-amber-200 text-xs sm:text-sm py-2 px-4 text-center font-medium tracking-wide">
+    🚚 Farm Direct Delivery & Healthy Poultry Guarantee | Call Us: <span class="text-amber-400 font-bold">+63 912 345 6789</span>
+  </div>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        
+        <!-- LOGO -->
+        <a href="#home" onclick="switchTab('home')" class="flex items-center gap-3 group">
+          <div class="w-12 h-12 bg-brand-700 text-amber-100 rounded-2xl flex items-center justify-center shadow-md group-hover:bg-brand-800 transition">
+            <i class="fa-solid fa-feather-pointed text-2xl"></i>
+          </div>
+          <div>
+            <span class="block font-serif text-xl sm:text-2xl font-bold text-brand-900 tracking-tight leading-none">Roost & Raised</span>
+            <span class="text-xs text-brand-600 font-semibold uppercase tracking-widest">Poultry Supply</span>
+          </div>
+        </a>
+
+        <!-- DESKTOP NAV LINKS -->
+        <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 font-semibold text-slate-700 text-sm">
+          <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-xl text-brand-700 bg-amber-100/70">Home</button>
+          <button onclick="switchTab('catalog')" id="nav-catalog" class="nav-btn px-4 py-2 rounded-xl hover:text-brand-700 hover:bg-amber-50 transition">Chickens & Catalog</button>
+          <button onclick="switchTab('admin')" id="nav-admin" class="nav-btn px-4 py-2 rounded-xl hover:text-brand-700 hover:bg-amber-50 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-sliders text-xs"></i> Admin Dashboard
+          </button>
+          <button onclick="switchTab('github-guide')" id="nav-guide" class="nav-btn px-4 py-2 rounded-xl hover:text-brand-700 hover:bg-amber-50 transition flex items-center gap-1.5 text-brand-800 bg-emerald-50 border border-emerald-200">
+            <i class="fa-brands fa-github text-sm"></i> VS Code & GitHub Guide
+          </button>
+        </nav>
+
+        <!-- RIGHT ACTION BUTTONS -->
+        <div class="flex items-center gap-3">
+          <!-- CART BUTTON -->
+          <button onclick="toggleCartModal(true)" class="relative p-3 bg-amber-100/80 hover:bg-amber-200/80 text-brand-900 rounded-2xl transition flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-basket-shopping text-lg"></i>
+            <span id="cart-badge" class="absolute -top-1 -right-1 bg-brand-700 text-white font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
+          </button>
+
+          <!-- MOBILE MENU BUTTON -->
+          <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 text-slate-700 hover:bg-slate-100 rounded-xl">
+            <i class="fa-solid fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOBILE MENU DROPDOWN -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2">
+      <button onclick="switchTab('home'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-lg text-slate-800 hover:bg-amber-50 font-medium">Home</button>
+      <button onclick="switchTab('catalog'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-lg text-slate-800 hover:bg-amber-50 font-medium">Chicken Catalog</button>
+      <button onclick="switchTab('admin'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-lg text-slate-800 hover:bg-amber-50 font-medium">Admin Dashboard</button>
+      <button onclick="switchTab('github-guide'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-lg text-emerald-800 bg-emerald-50 font-medium">VS Code & GitHub Guide</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow">
+
+    <!-- ==================== HOME TAB ==================== -->
+    <section id="tab-home" class="tab-content">
+      <!-- HERO SECTION -->
+      <div class="relative bg-brand-900 text-white overflow-hidden py-16 sm:py-24 lg:py-28">
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6 text-center lg:text-left">
+              <span class="inline-block px-4 py-1.5 bg-brand-700/80 text-amber-200 text-xs font-semibold rounded-full uppercase tracking-wider border border-amber-500/30">
+                🌱 100% Organically Raised & Vaccinated
+              </span>
+              <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-amber-50">
+                Farm-Fresh, Healthy & Ethical Breeding Chickens
+              </h1>
+              <p class="text-slate-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
+                Select from our premium lineup of 4-month pullets, 5-month point-of-lay hens, and 6-month+ mature egg layers and cockerels. Healthy genetics guaranteed!
+              </p>
+              <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                <button onclick="switchTab('catalog')" class="px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 text-center">
+                  Explore Chicken Catalog <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+                <button onclick="switchTab('github-guide')" class="px-6 py-4 bg-white/10 hover:bg-white/20 text-amber-200 font-semibold rounded-2xl border border-white/20 transition text-center">
+                  <i class="fa-brands fa-github mr-2"></i> Deploy to GitHub Guide
+                </button>
+              </div>
+            </div>
+
+            <div class="relative flex justify-center">
+              <div class="relative w-full max-w-md bg-gradient-to-b from-brand-700/40 to-brand-900 p-3 rounded-3xl border border-amber-500/30 shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=800&q=80" alt="Healthy Chicken" class="w-full h-80 sm:h-96 object-cover rounded-2xl shadow-md">
+                <div class="absolute -bottom-4 -left-4 bg-white text-slate-800 p-4 rounded-2xl shadow-lg border border-amber-100 flex items-center gap-3">
+                  <div class="w-10 h-10 bg-amber-100 text-brand-700 rounded-full flex items-center justify-center font-bold text-lg">
+                    ✓
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 font-medium">Fully Vaccinated</p>
+                    <p class="text-sm font-bold text-brand-900">Marek's & NCD Protected</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURES HIGHLIGHT -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-8 rounded-3xl border border-amber-100 shadow-sm hover:shadow-md transition">
+            <div class="w-14 h-14 bg-amber-100 text-brand-700 rounded-2xl flex items-center justify-center text-2xl mb-6">
+              <i class="fa-solid fa-egg"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">High Egg Yield Breeds</h3>
+            <p class="text-slate-600 text-sm">Selected lines of Rhode Island Red and Australorps proven to deliver up to 280+ eggs yearly.</p>
+          </div>
+
+          <div class="bg-white p-8 rounded-3xl border border-amber-100 shadow-sm hover:shadow-md transition">
+            <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl mb-6">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Veterinary Inspected</h3>
+            <p class="text-slate-600 text-sm">Every batch undergoes biweekly veterinary checks and mandatory deworming cycles.</p>
+          </div>
+
+          <div class="bg-white p-8 rounded-3xl border border-amber-100 shadow-sm hover:shadow-md transition">
+            <div class="w-14 h-14 bg-orange-100 text-brand-700 rounded-2xl flex items-center justify-center text-2xl mb-6">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Safe Farm Delivery</h3>
+            <p class="text-slate-600 text-sm">Temperature-controlled ventilated transport crates ensure chickens arrive calm and stress-free.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED CHICKENS PREVIEW -->
+      <div class="bg-amber-100/40 py-16 border-t border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10">
+            <div>
+              <span class="text-brand-700 font-semibold text-sm uppercase tracking-wider">Stock Available Now</span>
+              <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mt-1">Featured Farm Chickens</h2>
+            </div>
+            <button onclick="switchTab('catalog')" class="mt-4 sm:mt-0 text-brand-700 font-bold hover:text-brand-800 flex items-center gap-1 group">
+              View All Categories <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
+            </button>
+          </div>
+
+          <div id="featured-chickens-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamically Rendered -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CATALOG TAB ==================== -->
+    <section id="tab-catalog" class="tab-content hidden py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- HEADER & FILTER BAR -->
+        <div class="mb-10 text-center max-w-3xl mx-auto">
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-3">Our Chicken Inventory</h2>
+          <p class="text-slate-600 text-sm sm:text-base">Filter by age category to find the ideal flock members for your backyard coop or commercial farm.</p>
+          
+          <!-- AGE CATEGORY BUTTONS -->
+          <div class="flex flex-wrap justify-center gap-2 mt-8">
+            <button onclick="filterCategory('all')" id="cat-btn-all" class="cat-filter-btn active-cat border px-5 py-2.5 rounded-2xl text-sm font-semibold transition">
+              All Chickens
+            </button>
+            <button onclick="filterCategory('4-month')" id="cat-btn-4-month" class="cat-filter-btn border px-5 py-2.5 rounded-2xl text-sm font-semibold transition">
+              🐣 4-Month-Old (Pullets)
+            </button>
+            <button onclick="filterCategory('5-month')" id="cat-btn-5-month" class="cat-filter-btn border px-5 py-2.5 rounded-2xl text-sm font-semibold transition">
+              🐔 5-Month-Old (Point of Lay)
+            </button>
+            <button onclick="filterCategory('6-month-plus')" id="cat-btn-6-month-plus" class="cat-filter-btn border px-5 py-2.5 rounded-2xl text-sm font-semibold transition">
+              🐓 6-Month & Older (Mature)
+            </button>
+          </div>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div id="products-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- Dynamic products injected here -->
+        </div>
+
+        <div id="no-products-msg" class="hidden text-center py-16">
+          <i class="fa-solid fa-kiwi-bird text-5xl text-amber-300 mb-3"></i>
+          <p class="text-slate-600 font-medium">No chickens available under this category at the moment.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== ADMIN DASHBOARD TAB ==================== -->
+    <section id="tab-admin" class="tab-content hidden py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div>
+            <h2 class="font-serif text-3xl font-bold text-slate-900">Admin Control Panel</h2>
+            <p class="text-slate-600 text-sm">Add new chicken stock, modify pricing, update age categories, or remove listings.</p>
+          </div>
+          <button onclick="openAddProductModal()" class="px-5 py-3 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-2xl shadow-md transition flex items-center gap-2 self-start md:self-auto">
+            <i class="fa-solid fa-plus"></i> Add New Chicken Listing
+          </button>
+        </div>
+
+        <!-- STATS OVERVIEW -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="bg-white p-5 rounded-2xl border border-amber-100 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Total Listings</p>
+            <p id="stat-total" class="text-2xl font-extrabold text-brand-900 mt-1">0</p>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-amber-100 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">In Stock</p>
+            <p id="stat-instock" class="text-2xl font-extrabold text-emerald-600 mt-1">0</p>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-amber-100 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">4-5 Month Pullets</p>
+            <p id="stat-pullets" class="text-2xl font-extrabold text-brand-700 mt-1">0</p>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-amber-100 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Total Headcount</p>
+            <p id="stat-headcount" class="text-2xl font-extrabold text-blue-700 mt-1">0</p>
+          </div>
+        </div>
+
+        <!-- INVENTORY TABLE -->
+        <div class="bg-white rounded-3xl border border-amber-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-slate-100 bg-amber-50/50 flex justify-between items-center">
+            <h3 class="font-bold text-slate-800 text-base">Current Farm Inventory</h3>
+            <span class="text-xs text-slate-500">Live Synchronized</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 text-slate-500 text-xs font-semibold uppercase tracking-wider">
+                  <th class="py-3.5 px-6">Chicken / Breed</th>
+                  <th class="py-3.5 px-6">Age Category</th>
+                  <th class="py-3.5 px-6">Price</th>
+                  <th class="py-3.5 px-6">Stock Count</th>
+                  <th class="py-3.5 px-6 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body" class="divide-y divide-slate-100 text-sm">
+                <!-- Admin Table rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== GITHUB PAGES SETUP GUIDE TAB ==================== -->
+    <section id="tab-github-guide" class="tab-content hidden py-12 bg-amber-50/30">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="bg-white p-8 sm:p-10 rounded-3xl border border-amber-200 shadow-sm space-y-8">
+          <div>
+            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full uppercase tracking-wider mb-2">Step-By-Step Developer Guide</span>
+            <h2 class="font-serif text-3xl font-bold text-brand-900">How to Setup & Host This Site on GitHub Pages</h2>
+            <p class="text-slate-600 text-sm mt-1">Follow these exact instructions to push this code to VS Code and publish it live on GitHub Pages (just like your reference website link).</p>
+          </div>
+
+          <!-- STEP 1 -->
+          <div class="border-l-4 border-brand-700 pl-6 space-y-2">
+            <h3 class="font-bold text-lg text-slate-900">1. Prepare Your VS Code Folder</h3>
+            <p class="text-slate-600 text-sm">Create a clean folder on your computer named <code class="bg-slate-100 px-2 py-0.5 rounded text-brand-700">poultry-ecommerce</code>.</p>
+            <ol class="list-disc list-inside text-sm text-slate-600 space-y-1 pt-1">
+              <li>Open <strong>VS Code</strong>.</li>
+              <li>Go to <strong>File &gt; Open Folder...</strong> and select your <code class="bg-slate-100 px-1 rounded text-slate-800">poultry-ecommerce</code> folder.</li>
+              <li>Create a new file named <code class="bg-amber-100 text-brand-800 px-2 py-0.5 rounded font-mono font-bold">index.html</code>.</li>
+              <li>Copy and paste <strong>all code from this page</strong> directly into your <code class="bg-slate-100 px-1 rounded">index.html</code> file.</li>
+            </ol>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="border-l-4 border-brand-700 pl-6 space-y-2">
+            <h3 class="font-bold text-lg text-slate-900">2. Create a GitHub Repository</h3>
+            <ol class="list-disc list-inside text-sm text-slate-600 space-y-1">
+              <li>Go to <a href="https://github.com" target="_blank" class="text-brand-700 underline font-semibold">GitHub.com</a> and sign in.</li>
+              <li>Click the <strong>"+" (Plus icon)</strong> on the top right &gt; <strong>New repository</strong>.</li>
+              <li>Repository Name: <code class="bg-slate-100 px-2 py-0.5 rounded font-mono">poultry-store</code> (or any name you like).</li>
+              <li>Keep it set to <strong>Public</strong>.</li>
+              <li>Leave "Add a README file" unchecked and click <strong>Create repository</strong>.</li>
+            </ol>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="border-l-4 border-brand-700 pl-6 space-y-2">
+            <h3 class="font-bold text-lg text-slate-900">3. Push Code via VS Code Terminal</h3>
+            <p class="text-slate-600 text-sm">In VS Code, press <code class="bg-slate-100 px-2 py-0.5 rounded text-slate-800">Ctrl + `</code> (or go to <strong>Terminal &gt; New Terminal</strong>), then run these commands step by step:</p>
+            
+            <div class="bg-slate-900 text-amber-300 p-4 rounded-2xl font-mono text-xs sm:text-sm space-y-2 overflow-x-auto">
+              <p>git init</p>
+              <p>git add .</p>
+              <p>git commit -m "Initial commit - Poultry E-Commerce website"</p>
+              <p>git branch -M main</p>
+              <p class="text-slate-400"># Replace YOUR-USERNAME and REPO-NAME with your GitHub details:</p>
+              <p class="text-emerald-400">git remote add origin https://github.com/YOUR-USERNAME/poultry-store.git</p>
+              <p>git push -u origin main</p>
+            </div>
+          </div>
+
+          <!-- STEP 4 -->
+          <div class="border-l-4 border-brand-700 pl-6 space-y-2">
+            <h3 class="font-bold text-lg text-slate-900">4. Activate GitHub Pages</h3>
+            <ol class="list-disc list-inside text-sm text-slate-600 space-y-1">
+              <li>Go to your repository page on GitHub.</li>
+              <li>Click on <strong>Settings</strong> (top tab bar).</li>
+              <li>On the left sidebar, click <strong>Pages</strong>.</li>
+              <li>Under <strong>Build and deployment &gt; Branch</strong>, select <code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono">main</code> branch and leave folder as <code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono">/(root)</code>.</li>
+              <li>Click <strong>Save</strong>.</li>
+              <li>Wait 1-2 minutes! GitHub will generate your live URL like: <code class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200 font-semibold">https://YOUR-USERNAME.github.io/poultry-store/</code></li>
+            </ol>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-brand-900 text-slate-300 border-t border-brand-800 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-brand-700 text-amber-100 rounded-xl flex items-center justify-center">
+              <i class="fa-solid fa-feather-pointed text-xl"></i>
+            </div>
+            <span class="font-serif text-xl font-bold text-white">Roost & Raised</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">Dedicated to offering disease-resistant, high-producing poultry breeds with complete health records for backyard farmers and commercial growers.</p>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-sm mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-xs">
+            <li><button onclick="switchTab('home')" class="hover:text-amber-400">Home Page</button></li>
+            <li><button onclick="switchTab('catalog')" class="hover:text-amber-400">Chicken Categories</button></li>
+            <li><button onclick="switchTab('admin')" class="hover:text-amber-400">Admin Dashboard</button></li>
+            <li><button onclick="switchTab('github-guide')" class="hover:text-amber-400">GitHub Hosting Tutorial</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-sm mb-4">Chicken Categories</h4>
+          <ul class="space-y-2 text-xs">
+            <li><button onclick="switchTab('catalog'); filterCategory('4-month')" class="hover:text-amber-400">4-Month Pullets</button></li>
+            <li><button onclick="switchTab('catalog'); filterCategory('5-month')" class="hover:text-amber-400">5-Month Point of Lay</button></li>
+            <li><button onclick="switchTab('catalog'); filterCategory('6-month-plus')" class="hover:text-amber-400">6-Month Mature Breeders</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-sm mb-4">Contact Farm</h4>
+          <p class="text-xs text-slate-400 mb-2"><i class="fa-solid fa-location-dot mr-2 text-brand-500"></i> Zone 4 Poultry Valley Farm Road</p>
+          <p class="text-xs text-slate-400 mb-2"><i class="fa-solid fa-envelope mr-2 text-brand-500"></i> sales@roostandraised.com</p>
+          <p class="text-xs text-slate-400"><i class="fa-solid fa-phone mr-2 text-brand-500"></i> +63 912 345 6789</p>
+        </div>
+      </div>
+
+      <div class="border-t border-brand-800 mt-8 pt-6 text-center text-xs text-slate-500">
+        &copy; 2026 Roost & Raised Poultry Supply. Designed for custom GitHub Pages deployment.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS & DRAWER ==================== -->
+
+  <!-- PRODUCT DETAIL MODAL -->
+  <div id="detail-modal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl transform transition-all border border-amber-100 max-h-[90vh] overflow-y-auto">
+      <div class="relative">
+        <img id="modal-img" src="" alt="Chicken" class="w-full h-64 object-cover">
+        <button onclick="closeDetailModal()" class="absolute top-4 right-4 bg-black/50 text-white hover:bg-black w-9 h-9 rounded-full flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <span id="modal-age-badge" class="absolute bottom-4 left-4 bg-brand-700 text-white text-xs font-bold px-3 py-1 rounded-full uppercase"></span>
+      </div>
+
+      <div class="p-6 sm:p-8 space-y-6">
+        <div>
+          <div class="flex justify-between items-start">
+            <h3 id="modal-title" class="text-2xl font-bold font-serif text-slate-900"></h3>
+            <span id="modal-price" class="text-2xl font-extrabold text-brand-700"></span>
+          </div>
+          <p id="modal-breed" class="text-sm font-semibold text-brand-600 mt-1"></p>
+        </div>
+
+        <p id="modal-desc" class="text-slate-600 text-sm leading-relaxed"></p>
+
+        <!-- CHARACTERISTICS GRID -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-amber-50/60 p-4 rounded-2xl border border-amber-100 text-xs">
+          <div>
+            <span class="text-slate-400 block font-medium">Vaccination Status</span>
+            <span class="text-slate-800 font-bold">Up to Date ✓</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block font-medium">Egg Yield / Year</span>
+            <span id="modal-stat-eggs" class="text-slate-800 font-bold">250-280 Eggs</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block font-medium">Avg Weight</span>
+            <span id="modal-stat-weight" class="text-slate-800 font-bold">1.8 kg - 2.5 kg</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 pt-2">
+          <div class="w-32">
+            <label class="block text-xs font-bold text-slate-600 mb-1">Quantity</label>
+            <input type="number" id="modal-qty" value="1" min="1" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-center font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500">
+          </div>
+          <button id="modal-add-btn" class="flex-grow bg-brand-700 hover:bg-brand-800 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md transition mt-5">
+            Add to Order Basket
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT PRODUCT ADMIN MODAL -->
+  <div id="admin-product-modal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-amber-100 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="admin-modal-title" class="text-xl font-bold font-serif text-slate-900">Add New Chicken Listing</h3>
+        <button onclick="closeAdminProductModal()" class="text-slate-400 hover:text-slate-600 text-xl">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="product-form" onsubmit="saveProduct(event)" class="space-y-4 text-xs sm:text-sm">
+        <input type="hidden" id="form-product-id">
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Listing Name / Title</label>
+          <input type="text" id="form-name" required placeholder="e.g., Heritage Rhode Island Red Hen" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Breed</label>
+            <input type="text" id="form-breed" required placeholder="e.g., Rhode Island Red" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Age Category</label>
+            <select id="form-category" required class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none bg-white">
+              <option value="4-month">4-Month-Old Pullet</option>
+              <option value="5-month">5-Month-Old Point of Lay</option>
+              <option value="6-month-plus">6-Month & Older Mature</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Price (₱ PHP)</label>
+            <input type="number" id="form-price" required min="1" placeholder="450" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Stock Count</label>
+            <input type="number" id="form-stock" required min="0" placeholder="15" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Image URL</label>
+          <input type="url" id="form-image" required placeholder="https://images.unsplash.com/..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Description</label>
+          <textarea id="form-desc" rows="3" required placeholder="Provide health details, feeding behavior, and egg laying specs..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-4 flex gap-3">
+          <button type="button" onclick="closeAdminProductModal()" class="w-1/2 py-3 border border-slate-300 rounded-2xl font-bold text-slate-600 hover:bg-slate-50">Cancel</button>
+          <button type="submit" class="w-1/2 py-3 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-2xl shadow-md transition">Save Listing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SHOPPING CART DRAWER / MODAL -->
+  <div id="cart-modal" class="fixed inset-0 z-50 hidden modal-backdrop flex justify-end">
+    <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6 overflow-y-auto">
+      <div>
+        <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+          <h3 class="font-serif text-xl font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-basket-shopping text-brand-700"></i> Your Poultry Cart
+          </h3>
+          <button onclick="toggleCartModal(false)" class="text-slate-400 hover:text-slate-600 text-lg">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- CART ITEMS CONTAINER -->
+        <div id="cart-items-container" class="py-4 space-y-4">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- CART FOOTER & CHECKOUT -->
+      <div id="cart-summary-section" class="border-t border-slate-100 pt-4 space-y-4">
+        <div class="space-y-1 text-sm">
+          <div class="flex justify-between text-slate-600">
+            <span>Subtotal</span>
+            <span id="cart-subtotal" class="font-semibold">₱0</span>
+          </div>
+          <div class="flex justify-between text-slate-600">
+            <span>Ventilated Crate Delivery</span>
+            <span class="font-semibold text-emerald-700">Calculated Next</span>
+          </div>
+          <div class="flex justify-between text-slate-900 text-base font-bold pt-2 border-t border-slate-100">
+            <span>Estimated Total</span>
+            <span id="cart-total" class="text-brand-700">₱0</span>
+          </div>
+        </div>
+
+        <button onclick="triggerCheckout()" class="w-full py-4 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-2xl shadow-lg transition">
+          Proceed to Order Checkout
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-msg" class="fixed bottom-6 right-6 z-50 bg-brand-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none text-sm">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+    <span id="toast-text">Item added to cart!</span>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // INITIAL POULTRY PRODUCTS DATA
+    let products = [
+      {
+        id: "chk-1",
+        name: "Rhode Island Red Pullet",
+        breed: "Rhode Island Red",
+        category: "4-month",
+        price: 380,
+        stock: 24,
+        image: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=600&q=80",
+        description: "Hardy 4-month-old pullet entering maturity. Famous for heavy production of large brown eggs and docile temperament.",
+        eggs: "260-290 / year",
+        weight: "1.6 kg - 2.1 kg"
+      },
+      {
+        id: "chk-2",
+        name: "Black Australorp Point of Lay",
+        breed: "Australorp",
+        category: "5-month",
+        price: 480,
+        stock: 18,
+        image: "https://images.unsplash.com/photo-1563281577-a7be47e20db9?auto=format&fit=crop&w=600&q=80",
+        description: "Prime 5-month point of lay hen ready to lay eggs within 2-3 weeks. High stress-tolerance and excellent foraging capability.",
+        eggs: "280-300 / year",
+        weight: "2.0 kg - 2.4 kg"
+      },
+      {
+        id: "chk-3",
+        name: "White Leghorn High Laying Hen",
+        breed: "Leghorn",
+        category: "5-month",
+        price: 420,
+        stock: 15,
+        image: "https://images.unsplash.com/photo-1598965402089-897ce52e8355?auto=format&fit=crop&w=600&q=80",
+        description: "Lightweight and efficient white egg layer. Excellent feed-to-egg conversion ratio.",
+        eggs: "290-320 / year",
+        weight: "1.5 kg - 1.9 kg"
+      },
+      {
+        id: "chk-4",
+        name: "Barred Plymouth Rock Breeder",
+        breed: "Plymouth Rock",
+        category: "6-month-plus",
+        price: 580,
+        stock: 10,
+        image: "https://images.unsplash.com/photo-1612170153139-6f881ff067e0?auto=format&fit=crop&w=600&q=80",
+        description: "Mature 6-month-old hen with distinct striped feather patterns. Very calm and great dual-purpose breeding strain.",
+        eggs: "220-250 / year",
+        weight: "2.5 kg - 3.2 kg"
+      },
+      {
+        id: "chk-5",
+        name: "Heritage Cockerel Breeding Rooster",
+        breed: "Rhode Island Red",
+        category: "6-month-plus",
+        price: 650,
+        stock: 6,
+        image: "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?auto=format&fit=crop&w=600&q=80",
+        description: "Vigorous 6-month-plus mature rooster ideal for flock protection and fertile egg production.",
+        eggs: "N/A (Male)",
+        weight: "3.0 kg - 3.8 kg"
+      },
+      {
+        id: "chk-6",
+        name: "Sussex Dual-Purpose Pullet",
+        breed: "Light Sussex",
+        category: "4-month",
+        price: 400,
+        stock: 12,
+        image: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=600&q=80",
+        description: "Friendly and adaptable 4-month pullet. Excellent for backyard coops and child-friendly farms.",
+        eggs: "240-270 / year",
+        weight: "1.7 kg - 2.2 kg"
+      }
+    ];
+
+    let cart = [];
+    let currentCategoryFilter = 'all';
+
+    // INITIALIZATION
+    window.onload = function() {
+      renderCatalog();
+      renderFeatured();
+      renderAdminTable();
+      updateAdminStats();
+    };
+
+    // TAB NAVIGATION
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+      // Active state styling for nav buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-brand-700', 'bg-amber-100/70');
+      });
+      const activeNav = document.getElementById(`nav-${tabId}`);
+      if (activeNav) {
+        activeNav.classList.add('text-brand-700', 'bg-amber-100/70');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // CATEGORY FILTERING
+    function filterCategory(cat) {
+      currentCategoryFilter = cat;
+
+      // Button styling
+      document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-700', 'text-white');
+        btn.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+      });
+
+      const activeBtn = document.getElementById(`cat-btn-${cat}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-200');
+        activeBtn.classList.add('bg-brand-700', 'text-white');
+      }
+
+      renderCatalog();
+    }
+
+    // RENDER PRODUCTS IN CATALOG GRID
+    function renderCatalog() {
+      const grid = document.getElementById('products-grid');
+      grid.innerHTML = '';
+
+      const filtered = currentCategoryFilter === 'all' 
+        ? products 
+        : products.filter(p => p.category === currentCategoryFilter);
+
+      if (filtered.length === 0) {
+        document.getElementById('no-products-msg').classList.remove('hidden');
+      } else {
+        document.getElementById('no-products-msg').classList.add('hidden');
+      }
+
+      filtered.forEach(p => {
+        const ageLabel = getCategoryLabel(p.category);
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-3xl border border-amber-100 shadow-sm hover:shadow-md transition flex flex-col justify-between overflow-hidden group";
+
+        card.innerHTML = `
+          <div>
+            <div class="relative overflow-hidden h-52">
+              <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/600x400/fbeee3/92400e?text=Chicken+Image'">
+              <span class="absolute top-3 left-3 bg-brand-900/80 backdrop-blur-md text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                ${ageLabel}
+              </span>
+              <span class="absolute top-3 right-3 ${p.stock > 0 ? 'bg-emerald-500' : 'bg-red-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                ${p.stock > 0 ? `${p.stock} Available` : 'Sold Out'}
+              </span>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-semibold text-brand-600 block">${p.breed}</span>
+              <h3 class="font-bold text-slate-900 text-base mt-0.5 line-clamp-1">${p.name}</h3>
+              <p class="text-slate-500 text-xs mt-2 line-clamp-2">${p.description}</p>
+            </div>
+          </div>
+
+          <div class="p-5 pt-0 flex items-center justify-between border-t border-slate-50 mt-2">
+            <div>
+              <span class="text-[10px] text-slate-400 block font-medium">Price per head</span>
+              <span class="text-lg font-extrabold text-brand-700">₱${p.price.toLocaleString()}</span>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="openDetailModal('${p.id}')" class="p-2.5 text-slate-600 hover:text-brand-700 bg-slate-100 hover:bg-amber-100/70 rounded-xl transition" title="View Details">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button onclick="addToCart('${p.id}', 1)" ${p.stock <= 0 ? 'disabled' : ''} class="px-3.5 py-2.5 bg-brand-700 hover:bg-brand-800 disabled:bg-slate-300 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-plus"></i> Add
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // RENDER FEATURED PREVIEW ON HOME
+    function renderFeatured() {
+      const featuredGrid = document.getElementById('featured-chickens-grid');
+      featuredGrid.innerHTML = '';
+
+      products.slice(0, 3).forEach(p => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-3xl border border-amber-100 shadow-sm p-4 flex gap-4 items-center";
+        card.innerHTML = `
+          <img src="${p.image}" class="w-24 h-24 object-cover rounded-2xl flex-shrink-0" onerror="this.src='https://placehold.co/200x200/fbeee3/92400e?text=Chicken'">
+          <div class="flex-grow">
+            <span class="text-[10px] font-bold text-brand-700 uppercase bg-amber-100 px-2 py-0.5 rounded-full">${getCategoryLabel(p.category)}</span>
+            <h4 class="font-bold text-slate-900 text-sm mt-1">${p.name}</h4>
+            <p class="text-brand-700 font-extrabold text-sm mt-1">₱${p.price}</p>
+            <button onclick="openDetailModal('${p.id}')" class="text-xs text-brand-800 font-semibold underline mt-1 block">Inspect Record</button>
+          </div>
+        `;
+        featuredGrid.appendChild(card);
+      });
+    }
+
+    // CATEGORY LABEL HELPER
+    function getCategoryLabel(cat) {
+      switch(cat) {
+        case '4-month': return '4-Month Pullet';
+        case '5-month': return '5-Month Laying';
+        case '6-month-plus': return '6-Month+ Breeder';
+        default: return cat;
+      }
+    }
+
+    // PRODUCT DETAIL MODAL LOGIC
+    function openDetailModal(id) {
+      const p = products.find(prod => prod.id === id);
+      if (!p) return;
+
+      document.getElementById('modal-img').src = p.image;
+      document.getElementById('modal-title').innerText = p.name;
+      document.getElementById('modal-breed').innerText = `Breed: ${p.breed}`;
+      document.getElementById('modal-price').innerText = `₱${p.price.toLocaleString()}`;
+      document.getElementById('modal-desc').innerText = p.description;
+      document.getElementById('modal-age-badge').innerText = getCategoryLabel(p.category);
+      document.getElementById('modal-stat-eggs').innerText = p.eggs || '220-280 Eggs';
+      document.getElementById('modal-stat-weight').innerText = p.weight || '1.8 kg - 2.5 kg';
+
+      const addBtn = document.getElementById('modal-add-btn');
+      addBtn.onclick = function() {
+        const qty = parseInt(document.getElementById('modal-qty').value) || 1;
+        addToCart(p.id, qty);
+        closeDetailModal();
+      };
+
+      document.getElementById('detail-modal').classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detail-modal').classList.add('hidden');
+    }
+
+    // SHOPPING CART LOGIC
+    function addToCart(id, qty) {
+      const product = products.find(p => p.id === id);
+      if (!product || product.stock <= 0) return;
+
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ ...product, qty: qty });
+      }
+
+      updateCartUI();
+      showToast(`Added ${product.name} to order!`);
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cart-badge');
+      const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+      badge.innerText = totalCount;
+
+      const container = document.getElementById('cart-items-container');
+      container.innerHTML = '';
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 text-slate-400">
+            <i class="fa-solid fa-basket-shopping text-4xl mb-2"></i>
+            <p class="text-xs">Your poultry cart is currently empty.</p>
+          </div>
+        `;
+      } else {
+        cart.forEach(item => {
+          const itemEl = document.createElement('div');
+          itemEl.className = "flex items-center justify-between gap-3 bg-amber-50/50 p-3 rounded-2xl border border-amber-100";
+          itemEl.innerHTML = `
+            <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover">
+            <div class="flex-grow">
+              <h5 class="font-bold text-xs text-slate-800">${item.name}</h5>
+              <p class="text-xs text-brand-700 font-semibold">₱${item.price} x ${item.qty}</p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="changeCartQty('${item.id}', -1)" class="w-6 h-6 bg-white border rounded-lg text-xs font-bold">-</button>
+              <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+              <button onclick="changeCartQty('${item.id}', 1)" class="w-6 h-6 bg-white border rounded-lg text-xs font-bold">+</button>
+              <button onclick="removeFromCart('${item.id}')" class="text-red-500 hover:text-red-700 ml-2 text-xs">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          `;
+          container.appendChild(itemEl);
+        });
+      }
+
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      document.getElementById('cart-subtotal').innerText = `₱${subtotal.toLocaleString()}`;
+      document.getElementById('cart-total').innerText = `₱${subtotal.toLocaleString()}`;
+    }
+
+    function changeCartQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        removeFromCart(id);
+      } else {
+        updateCartUI();
+      }
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(i => i.id !== id);
+      updateCartUI();
+    }
+
+    function toggleCartModal(show) {
+      const modal = document.getElementById('cart-modal');
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    function triggerCheckout() {
+      if (cart.length === 0) {
+        showToast('Add chickens to your cart first!');
+        return;
+      }
+      alert('🐔 Thank you! Your order request has been logged. Our farm manager will contact you for pickup/delivery verification.');
+      cart = [];
+      updateCartUI();
+      toggleCartModal(false);
+    }
+
+    // ADMIN DASHBOARD LOGIC
+    function renderAdminTable() {
+      const tbody = document.getElementById('admin-table-body');
+      tbody.innerHTML = '';
+
+      products.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-amber-50/30 transition";
+        tr.innerHTML = `
+          <td class="py-3.5 px-6 flex items-center gap-3">
+            <img src="${p.image}" class="w-10 h-10 rounded-xl object-cover" onerror="this.src='https://placehold.co/100x100/fbeee3/92400e?text=Chk'">
+            <div>
+              <p class="font-bold text-slate-900">${p.name}</p>
+              <p class="text-xs text-slate-400">${p.breed}</p>
+            </div>
+          </td>
+          <td class="py-3.5 px-6 font-semibold text-xs text-brand-800">
+            ${getCategoryLabel(p.category)}
+          </td>
+          <td class="py-3.5 px-6 font-bold text-brand-700">₱${p.price}</td>
+          <td class="py-3.5 px-6">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${p.stock > 5 ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
+              ${p.stock} heads
+            </span>
+          </td>
+          <td class="py-3.5 px-6 text-right space-x-2">
+            <button onclick="editProduct('${p.id}')" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg" title="Edit Listing">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button onclick="deleteProduct('${p.id}')" class="p-2 text-red-600 hover:bg-red-50 rounded-lg" title="Delete Listing">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateAdminStats() {
+      document.getElementById('stat-total').innerText = products.length;
+      document.getElementById('stat-instock').innerText = products.filter(p => p.stock > 0).length;
+      document.getElementById('stat-pullets').innerText = products.filter(p => p.category === '4-month' || p.category === '5-month').length;
+      document.getElementById('stat-headcount').innerText = products.reduce((sum, p) => sum + p.stock, 0);
+    }
+
+    function openAddProductModal() {
+      document.getElementById('admin-modal-title').innerText = "Add New Chicken Listing";
+      document.getElementById('product-form').reset();
+      document.getElementById('form-product-id').value = '';
+      document.getElementById('admin-product-modal').classList.remove('hidden');
+    }
+
+    function closeAdminProductModal() {
+      document.getElementById('admin-product-modal').classList.add('hidden');
+    }
+
+    function saveProduct(e) {
+      e.preventDefault();
+      const id = document.getElementById('form-product-id').value;
+      const name = document.getElementById('form-name').value;
+      const breed = document.getElementById('form-breed').value;
+      const category = document.getElementById('form-category').value;
+      const price = parseFloat(document.getElementById('form-price').value);
+      const stock = parseInt(document.getElementById('form-stock').value);
+      const image = document.getElementById('form-image').value;
+      const description = document.getElementById('form-desc').value;
+
+      if (id) {
+        // Edit existing
+        const index = products.findIndex(p => p.id === id);
+        if (index !== -1) {
+          products[index] = { ...products[index], name, breed, category, price, stock, image, description };
+          showToast('Chicken listing updated successfully!');
+        }
+      } else {
+        // Create new
+        const newProd = {
+          id: 'chk-' + Date.now(),
+          name, breed, category, price, stock, image, description,
+          eggs: '250-280 / year',
+          weight: '1.8 kg - 2.5 kg'
+        };
+        products.unshift(newProd);
+        showToast('New chicken listed in inventory!');
+      }
+
+      closeAdminProductModal();
+      renderCatalog();
+      renderFeatured();
+      renderAdminTable();
+      updateAdminStats();
+    }
+
+    function editProduct(id) {
+      const p = products.find(prod => prod.id === id);
+      if (!p) return;
+
+      document.getElementById('admin-modal-title').innerText = "Edit Chicken Listing";
+      document.getElementById('form-product-id').value = p.id;
+      document.getElementById('form-name').value = p.name;
+      document.getElementById('form-breed').value = p.breed;
+      document.getElementById('form-category').value = p.category;
+      document.getElementById('form-price').value = p.price;
+      document.getElementById('form-stock').value = p.stock;
+      document.getElementById('form-image').value = p.image;
+      document.getElementById('form-desc').value = p.description;
+
+      document.getElementById('admin-product-modal').classList.remove('hidden');
+    }
+
+    function deleteProduct(id) {
+      if (confirm('Are you sure you want to remove this chicken listing from inventory?')) {
+        products = products.filter(p => p.id !== id);
+        renderCatalog();
+        renderFeatured();
+        renderAdminTable();
+        updateAdminStats();
+        showToast('Listing removed!');
+      }
+    }
+
+    // TOAST UTILITY
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      document.getElementById('toast-text').innerText = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>
